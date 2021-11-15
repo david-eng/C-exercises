@@ -1,0 +1,4 @@
+Quantidade de A: 246
+Quantidade de G: 250
+Quantidade de C: 241
+Quantidade de T: 263
