@@ -105,37 +105,26 @@ int queue_copy(Queue *const target, const Queue *const source) {
 
 /*
 	A queue não pode estar vazia
-	Remove o item indicado pelo cursor
-	Retorna 1 se tiver sucesso
+	Remove um item da lista
+	Retorna o item removido
 	Retorna -1 em caso de erro
 */
 DataType queue_dequeue(Queue *const queue) {
 	assert(queue);
 	if (!queue_isEmpty(queue)) {
+		DataType removido = queue->cursor->nodeData;
 		if (queue->tam_atual == 1) {
 			queue->top    = NULL;
 			queue->cursor = NULL;
-		} else if (queue_getCursor(queue) == queue->tam_atual - 1) {
-			queue_gotoPrior(queue);
-			free(queue->cursor->nextPtr);
-			queue->cursor->nextPtr = NULL;
 		} else {
-			//Logica para o caso do cursor estiver apontando para o topo.
-			if (queue->cursor == queue->top) {
-				Queue *aux = (struct Queue *)queue->cursor->nextPtr;
-				free(queue->top);
-				queue->top    = (struct ListNode *)aux;
-				queue->cursor = (struct ListNode *)aux;
-			} else {
-				Queue *aux = (struct Queue *)queue->cursor->nextPtr;
-				queue_gotoPrior(queue);
-				free(queue->cursor->nextPtr);
-				queue->cursor->nextPtr = (struct queue *)aux;
-				queue->cursor          = (struct ListNode *)aux;
-			}
+			queue->cursor = queue->top;
+			Queue *aux    = (struct Queue *)queue->cursor->nextPtr;
+			free(queue->top);
+			queue->top    = (struct ListNode *)aux;
+			queue->cursor = (struct ListNode *)aux;
 		}
 		queue->tam_atual--;
-		return 1;
+		return removido;
 	} else {
 		return -1;
 	}
