@@ -68,7 +68,7 @@ int queue_enqueue(Queue *const queue, const DataType newDataItem) {
 			node->nextPtr = NULL;
 			queue->cursor = node;
 		} else if (queue->cursor->nextPtr == NULL) {
-			queue->cursor->nextPtr = (struct queue *)node;
+			queue->cursor->nextPtr = node;
 			node->nextPtr          = NULL;
 			queue->cursor          = node;
 		}
@@ -252,7 +252,7 @@ bool queue_gotoPrior(Queue *queue) {
 	assert(queue);
 	ListNode *aux = queue->top;
 	if (queue->cursor != queue->top) {
-		while (aux->nextPtr != (struct queue *)queue->cursor) {
+		while (aux->nextPtr != queue->cursor) {
 			aux = (struct ListNode *)aux->nextPtr;
 		}
 		queue->cursor = aux;
@@ -269,7 +269,7 @@ DataType queue_getFromCursor(Queue *const queue) {
 	assert(queue);
 	ListNode *aux = queue->top;
 	if (queue->cursor != queue->top) {
-		while (aux->nextPtr != (struct queue *)queue->cursor) {
+		while (aux->nextPtr != queue->cursor) {
 			aux = (struct ListNode *)aux->nextPtr;
 		}
 		queue->cursor = aux;

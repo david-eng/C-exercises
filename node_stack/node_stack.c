@@ -71,7 +71,7 @@ int stack_push(Stack *const stack, const DataType newDataItem) {
 			node->nextPtr = NULL;
 			stack->cursor = node;
 		} else if (stack->cursor->nextPtr == NULL) {
-			stack->cursor->nextPtr = (struct Stack *)node;
+			stack->cursor->nextPtr = node;
 			node->nextPtr          = NULL;
 			stack->cursor          = node;
 		}
@@ -126,7 +126,7 @@ DataType stack_pop(Stack *const stack) {
 			Stack *aux = (struct Stack *)stack->cursor->nextPtr;
 			stack_gotoPrior(stack);
 			free(stack->cursor->nextPtr);
-			stack->cursor->nextPtr = (struct Stack *)aux;
+			stack->cursor->nextPtr = (struct ListNode *)aux;
 			stack->cursor          = (struct ListNode *)aux;
 		}
 		stack->tam_atual--;
@@ -261,7 +261,7 @@ bool stack_gotoPrior(Stack *stack) {
 	assert(stack);
 	ListNode *aux = stack->top;
 	if (stack->cursor != stack->top) {
-		while (aux->nextPtr != (struct Stack *)stack->cursor) {
+		while (aux->nextPtr != stack->cursor) {
 			aux = (struct ListNode *)aux->nextPtr;
 		}
 		stack->cursor = aux;
@@ -278,7 +278,7 @@ DataType stack_getFromCursor(Stack *const stack) {
 	assert(stack);
 	ListNode *aux = stack->top;
 	if (stack->cursor != stack->top) {
-		while (aux->nextPtr != (struct Stack *)stack->cursor) {
+		while (aux->nextPtr != stack->cursor) {
 			aux = (struct ListNode *)aux->nextPtr;
 		}
 		stack->cursor = aux;

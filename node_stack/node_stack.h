@@ -17,7 +17,7 @@ typedef char DataType;
 // Classe
 
 typedef struct ListNode {
-	struct Stack *nextPtr;
+	struct ListNode *nextPtr;
 	DataType nodeData;
 } ListNode;
 

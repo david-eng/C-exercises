@@ -70,17 +70,17 @@ int LinkedList_insert(LinkedList *list, const DataType item) {
 		list->cursor  = node;
 	} else if (LinkedList_getCursor(list) < list->tam_atual - 1) {
 		if (list->cursor == list->top) {
-			node->nextPtr = (struct LinkedList *)list->top;
+			node->nextPtr = list->top;
 			list->top     = node;
 			list->cursor  = node;
 		} else {
-			node->nextPtr = (struct LinkedList *)list->cursor;
+			node->nextPtr = list->cursor;
 			LinkedList_gotoPrior(list);
-			list->cursor->nextPtr = (struct LinkedList *)node;
+			list->cursor->nextPtr = node;
 			list->cursor          = node;
 		}
 	} else if (list->cursor->nextPtr == NULL) {
-		list->cursor->nextPtr = (struct LinkedList *)node;
+		list->cursor->nextPtr = node;
 		node->nextPtr         = NULL;
 		list->cursor          = node;
 	}
@@ -140,15 +140,15 @@ int LinkedList_remove(LinkedList *const list) {
 		} else {
 			//Logica para o caso do cursor estiver apontando para o topo.
 			if (list->cursor == list->top) {
-				LinkedList *aux = list->cursor->nextPtr;
+				LinkedList *aux = (struct LinkedList *)list->cursor->nextPtr;
 				free(list->top);
 				list->top    = (struct ListNode *)aux;
 				list->cursor = (struct ListNode *)aux;
 			} else {
-				LinkedList *aux = list->cursor->nextPtr;
+				LinkedList *aux = (struct LinkedList *)list->cursor->nextPtr;
 				LinkedList_gotoPrior(list);
 				free(list->cursor->nextPtr);
-				list->cursor->nextPtr = (struct LinkedList *)aux;
+				list->cursor->nextPtr = (struct ListNode *)aux;
 				list->cursor          = (struct ListNode *)aux;
 			}
 		}
@@ -275,7 +275,7 @@ bool LinkedList_gotoPrior(LinkedList *list) {
 	assert(list);
 	ListNode *aux = list->top;
 	if (list->cursor != list->top) {
-		while (aux->nextPtr != (struct LinkedList *)list->cursor) {
+		while (aux->nextPtr != list->cursor) {
 			aux = (struct ListNode *)aux->nextPtr;
 		}
 		list->cursor = aux;
